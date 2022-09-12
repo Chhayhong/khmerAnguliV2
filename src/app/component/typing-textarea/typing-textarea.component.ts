@@ -15,7 +15,7 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
   // forceFocus: boolean = true;
   displayCurrentAlphabet: string = '';
   textAreaControl = new FormControl('');
-  startIndex = 0;
+  startIndex = 0; 
   keepChecking = interval(0);
   currentinput:string=''
   announceResult:string='';
@@ -27,22 +27,13 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
   }
   typingContent: any = this.khmerTypingService.khmerAlphabetSplitter(this.typingTextAreaData);
   ngOnInit() {
-    this.keepChecking.pipe(takeUntil(this.destroy$ || this.startIndex===this.typingContent.length)).subscribe(() => {
+    // this.keepChecking.pipe(takeUntil(this.destroy$ || this.startIndex===this.typingContent.length)).subscribe(() => {
       this.initPlayScreen()
-      if(this.startIndex===this.typingContent.length){
-        this.announceResult=this.khmerTypingService.announceResult().toString()
-        this.destroy$.next(true);
-        this.destroy$.unsubscribe();
-        this.textAreaControl.disable()
-        this.khmerTypingService.announceResult();
-        this.khmerTypingService.resetContent()
-        console.log('No more content to type so destroyed!!!');
-      }
-    })
+    // })
   }
   restartTyping(){
     try {
-      this.keepChecking.subscribe()
+      // this.keepChecking.subscribe().unsubscribe()
       this.startIndex=0
       this.textAreaControl.enable()
       this.khmerTypingService.resetContent()
@@ -69,8 +60,25 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
           this.textAreaControl.reset()
         }
         this.textAreaControl.reset()
+        try {
+          this.onEndGame()
+        } catch (error) {
+          console.warn('Under investigation this unsubscribed error xD ',error);
+        }
       }
-    })
+    })    
+  }
+  onEndGame(){
+    if(this.startIndex===this.typingContent.length){
+      this.announceResult=this.khmerTypingService.announceResult().toString()
+      // this.destroy$.next(true);
+      // this.destroy$.unsubscribe();
+      this.textAreaControl.disable();
+      this.startIndex=0;
+      this.khmerTypingService.announceResult();
+      this.khmerTypingService.resetContent()
+      console.log('No more content to type so destroyed!!!');
+    }
   }
   ngOnDestroy(): void {
     // when destroy$ already unsubscribed

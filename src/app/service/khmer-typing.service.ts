@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Graphemer from 'graphemer';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +35,12 @@ export class KhmerTypingService {
       this.alphabetArray[index].correct=true;
       this.alphabetArray[index].current=true;
     }else{
-        this.alphabetArray[index].current=true;
+        try { //fix error of undefined when restart typing.
+          this.alphabetArray[index].current=true;
         this.alphabetArray[index].inCorrectCount=this.alphabetArray[index].inCorrectCount +1;
+        } catch (error) {
+          console.error(error)
+        }
     }
   }
   announceResult(){
@@ -44,6 +48,9 @@ export class KhmerTypingService {
   }
   resetContent(){
     this.alphabetArray=[]
+  }
+  setGameToEnd(){
+    return null;
   }
   setCurrentAlphabetAsCurrentTyping(){
     if(this.alphabetArray.length!==0 && !this.alphabetArray[0].current){
