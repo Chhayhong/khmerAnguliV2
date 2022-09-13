@@ -57,7 +57,7 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
           this.khmerTypingService.playTime(input, this.startIndex)
           this.startIndex = this.startIndex + 1
           this.keyboard=mapping[this.typingContent[this.startIndex]?.khmer]
-          this.displayCurrentAlphabet = this.typingContent[this.startIndex]?.khmer == ' ' ? 'ដកឃ្លា' : this.typingContent[this.startIndex]?.khmer    
+          this.displayCurrentAlphabet = this.specialAlphabetConverter(this.typingContent[this.startIndex]?.khmer)
           this.textAreaControl.reset()          
         }else{
           this.khmerTypingService.playTime(input, this.startIndex)
@@ -71,6 +71,19 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
         }
       }
     })    
+  }
+  specialAlphabetConverter(alphabet:string){
+    switch(alphabet){
+      case ' ':{
+        return 'ដកឃ្លា'
+      }
+      case '្':{
+        return 'ដាកជើង'
+      }
+      default:{
+        return alphabet
+      }
+    }
   }
   onEndGame(){
     if(this.startIndex===this.typingContent.length){

@@ -14,10 +14,14 @@ export class KhmerTypingService {
     const graphemes = this.splitter.splitGraphemes(khmerWord);
     graphemes.forEach(alphabet => {     
       if(alphabet.charAt(0).charCodeAt(0)!==8203){ //remove english space.
-        if(alphabet.length>1){
+        if(alphabet.length>1){ //More than one string
           let firstLetter = {khmer:alphabet.charAt(0),unicode:alphabet.charAt(0).charCodeAt(0),correct:false,inCorrectCount:0,current:false}
           let secondLetter ={khmer:alphabet.charAt(1),unicode:alphabet.charAt(1).charCodeAt(0),correct:false,inCorrectCount:0,current:false}
           this.alphabetArray.push(firstLetter,secondLetter)
+          if(alphabet.length>2){ //More than two string
+            let thidLetter ={khmer:alphabet.charAt(2),unicode:alphabet.charAt(2).charCodeAt(0),correct:false,inCorrectCount:0,current:false}
+            this.alphabetArray.push(thidLetter)
+          }
         }else{          
           this.alphabetArray.push({khmer:alphabet.charAt(0),unicode:alphabet.charAt(0).charCodeAt(0),correct:false,inCorrectCount:0,current:false})
         }

@@ -5,9 +5,7 @@
         <span *ngFor="let item of typingContent; let i = index">
             <span  [style.color]="typingContent[i].current?'#596DD2':'black'">{{item.khmer}}</span>  
         </span>
-        <div >
-            <progress style="width:100%" id="file" [value]="startIndex" [max]="typingContent.length">  </progress>
-        </div>
+        <div style="margin-bottom: 300px;"></div>
     </div>
     <!-- [style.marginTop.px]="startIndex*90" -->
     <div class="typing-text-area">
@@ -17,6 +15,7 @@
             | <span *ngIf="announceResult===''">
                 Keyboard: <span *ngFor="let key of keyboard; first as isFirst"> {{key}} <span *ngIf="isFirst">{{keyboard.length>1?'+':''}}</span></span>
             </span>
+            <progress style="width:100%" id="file" [value]="startIndex" [max]="typingContent.length">  </progress>
             <input style="font-family: Kantumruy" *ngIf="announceResult===''" type="text" [formControl]="textAreaControl" placeholder="ចាប់ផ្ដើមត្រង់នេះ 🏁" [autofocus]="true">
         </div>
         <h4>{{announceResult}}</h4>
