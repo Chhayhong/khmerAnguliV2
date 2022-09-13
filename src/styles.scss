@@ -5,6 +5,25 @@ body{
     font-size: 30px;
     font-family: Kantumruy;
 }
+.container{
+    width: 90vw;
+    padding: 10px;
+}
+.play-screen{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    .typing-content{
+        width: 100%;
+        justify-content: center;
+    }
+    .typing-text-area{
+        width: 90vw;
+        margin-bottom: 10px;
+        bottom: 0;
+        position: fixed;
+    }
+}
 input{
     width: 100%;
     height: 30px;

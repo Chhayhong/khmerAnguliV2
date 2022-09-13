@@ -1,16 +1,26 @@
 <div class="container">
+   <div class="play-screen">
     <div class="typing-content">
+        <br>
         <span *ngFor="let item of typingContent; let i = index">
-            <span  [style.color]="typingContent[i].current?'blue':'black'">{{item.khmer}}</span>  
+            <span  [style.color]="typingContent[i].current?'#596DD2':'black'">{{item.khmer}}</span>  
         </span>
         <div >
             <progress style="width:100%" id="file" [value]="startIndex" [max]="typingContent.length">  </progress>
         </div>
     </div>
+    <!-- [style.marginTop.px]="startIndex*90" -->
     <div class="typing-text-area">
-        <p>វាយអក្សរ : {{this.displayCurrentAlphabet}} | បានបញ្ចូល: {{ this.currentinput}} | ខុស : {{ this.typingContent[startIndex]?.inCorrectCount}}</p>
+        <br>
+        <div class="input-container">
+            <span>វាយអក្សរ : {{this.displayCurrentAlphabet}} | បានបញ្ចូល: {{ this.currentinput}} | ខុស : {{ this.typingContent[startIndex]?.inCorrectCount}}</span>
+            | <span *ngIf="announceResult===''">
+                Keyboard: <span *ngFor="let key of keyboard; first as isFirst"> {{key}} <span *ngIf="isFirst">{{keyboard.length>1?'+':''}}</span></span>
+            </span>
+            <input style="font-family: Kantumruy" *ngIf="announceResult===''" type="text" [formControl]="textAreaControl" placeholder="ចាប់ផ្ដើមត្រង់នេះ 🏁" [autofocus]="true">
+        </div>
         <h4>{{announceResult}}</h4>
-        <button *ngIf="announceResult!==''" (click)="restartTyping()">Restart</button>
-        <input style="font-family: Kantumruy" *ngIf="announceResult===''" type="text" [formControl]="textAreaControl" placeholder="ចាប់ផ្ដើមត្រង់នេះ 🏁" [autofocus]="true">
+        <button *ngIf="announceResult!==''" (click)="restartTyping()">វាយម្ដងទៀត</button>
     </div>
+   </div>
 </div>

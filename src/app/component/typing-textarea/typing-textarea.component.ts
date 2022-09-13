@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Renderer2, } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { interval, Subject, takeUntil } from 'rxjs';
+import { interval, Subject } from 'rxjs';
 import { KhmerTypingService } from 'src/app/service/khmer-typing.service';
-
+import mapping from "../../utility/mapping";
+import localContent from 'src/app/utility/local-content';
 @Component({
   selector: 'app-typing-textarea',
   templateUrl: './typing-textarea.component.html',
@@ -10,7 +11,7 @@ import { KhmerTypingService } from 'src/app/service/khmer-typing.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TypingTextareaComponent implements OnInit, OnDestroy {
-  @Input() typingTextAreaData = 'រាជរដ្ឋាភិបាល​កម្ពុជា​';
+  @Input() typingTextAreaData =  localContent['ប្រទេសកម្ពុជា'];
   destroy$: Subject<boolean> = new Subject<boolean>();
   // forceFocus: boolean = true;
   displayCurrentAlphabet: string = '';
@@ -19,11 +20,13 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
   keepChecking = interval(0);
   currentinput:string=''
   announceResult:string='';
+  keyboard:any=''
   constructor(
     private khmerTypingService: KhmerTypingService,
     private renderer: Renderer2
   ) {
     this.displayCurrentAlphabet = this.typingTextAreaData[0]
+    this.keyboard=mapping[this.typingTextAreaData[0]]
   }
   typingContent: any = this.khmerTypingService.khmerAlphabetSplitter(this.typingTextAreaData);
   ngOnInit() {
@@ -52,8 +55,9 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
         this.currentinput=input
         if (input == this.typingContent[this.startIndex]?.khmer) {
           this.khmerTypingService.playTime(input, this.startIndex)
-          this.startIndex = this.startIndex + 1     
-          this.displayCurrentAlphabet = this.typingContent[this.startIndex]?.khmer == ' ' ? 'space' : this.typingContent[this.startIndex]?.khmer    
+          this.startIndex = this.startIndex + 1
+          this.keyboard=mapping[this.typingContent[this.startIndex]?.khmer]
+          this.displayCurrentAlphabet = this.typingContent[this.startIndex]?.khmer == ' ' ? 'ដកឃ្លា' : this.typingContent[this.startIndex]?.khmer    
           this.textAreaControl.reset()          
         }else{
           this.khmerTypingService.playTime(input, this.startIndex)
