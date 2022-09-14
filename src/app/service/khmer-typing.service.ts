@@ -12,8 +12,8 @@ export class KhmerTypingService {
   constructor() { }
   khmerAlphabetSplitter(khmerWord:string){
     const graphemes = this.splitter.splitGraphemes(khmerWord);
-    graphemes.forEach(alphabet => {     
-      if(alphabet.charAt(0).charCodeAt(0)!==8203){ //remove english space.
+    graphemes.forEach(alphabet => {           
+      if(alphabet.charAt(0).charCodeAt(0)!==8203 && alphabet.charAt(0).charCodeAt(0)!==10){ //remove english space and /n character
         if(alphabet.length>1){ //More than one string
           let firstLetter = {khmer:alphabet.charAt(0),unicode:alphabet.charAt(0).charCodeAt(0),correct:false,inCorrectCount:0,current:false}
           let secondLetter ={khmer:alphabet.charAt(1),unicode:alphabet.charAt(1).charCodeAt(0),correct:false,inCorrectCount:0,current:false}
