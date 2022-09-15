@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Graphemer from 'graphemer';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
