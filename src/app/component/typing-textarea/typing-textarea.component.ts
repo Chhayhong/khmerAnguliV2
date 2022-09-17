@@ -30,13 +30,10 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
   }
   typingContent: any = this.khmerTypingService.khmerAlphabetSplitter(this.typingTextAreaData);
   ngOnInit() {
-    // this.keepChecking.pipe(takeUntil(this.destroy$ || this.startIndex===this.typingContent.length)).subscribe(() => {
       this.initPlayScreen()
-    // })
   }
   restartTyping(){
     try {
-      // this.keepChecking.subscribe().unsubscribe()
       this.startIndex=0
       this.textAreaControl.enable()
       this.khmerTypingService.resetContent()

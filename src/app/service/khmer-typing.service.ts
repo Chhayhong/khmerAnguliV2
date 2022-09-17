@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { from, pairwise, startWith, takeWhile } from 'rxjs';
+import { from, pairwise } from 'rxjs';
 import combinableVowel from '../utility/combinable-vowel';
 
 @Injectable({
@@ -10,6 +10,7 @@ export class KhmerTypingService {
   unwantedStringList = [8203, 10]
   announceResultMessage: string = 'អបអរសាទរ, អ្នកបានវាយបញ្ចប់ដោយជោគជ័យ🎉'
   constructor() { }
+  //Todo : Fix when meet ាំ keyboard not accept the correct value.
   khmerAlphabetSplitter(khmerWord: string) {
     const splittedContent = from(khmerWord);
     splittedContent.pipe(
@@ -19,17 +20,13 @@ export class KhmerTypingService {
        if(!this.checkUnwantedString(previousValue)){
         return;
        }   
-       if(previousValue==='ោ' && currentValue==='ះ' || previousValue==='ា' && currentValue==='ំ'){
-        console.log('You are destiny');
-        console.log(combinableVowel[previousValue]);
-        this.alphabetArray.push({ khmer:combinableVowel[previousValue], unicode: this.getCharCodeAt(combinableVowel[previousValue]), correct: false, inCorrectCount: 0, current: false })
+       if(this.checkCombinableVowel(previousValue,currentValue)){
+        this.alphabetArray.push({ khmer:combinableVowel[previousValue], unicode: this.getCharCodeAt(combinableVowel[previousValue]), correct: false, inCorrectCount: 0, current: false,type:'combinableVowel' })
        }else{
-        this.alphabetArray.push({ khmer: this.getCharAt(previousValue), unicode: this.getCharCodeAt(previousValue), correct: false, inCorrectCount: 0, current: false })
+        this.alphabetArray.push({ khmer: this.getCharAt(previousValue), unicode: this.getCharCodeAt(previousValue), correct: false, inCorrectCount: 0, current: false,type:'single' })
        }       
    });
-    this.alphabetArray[0].current = true; //set first alphabet as the first current key to type.  
-    console.log(this.alphabetArray);
-      
+    this.alphabetArray[0].current = true; //set first alphabet as the first current key to type.        
     return this.alphabetArray;
   }
   specialAlphabetConverter(alphabet: string) {
@@ -46,6 +43,8 @@ export class KhmerTypingService {
     }
   }
   playTime(input: any, index: number) {
+    console.log(input,index);
+    
     if (this.checkIfContentToTypeRemain()) {
       return
     }
@@ -60,6 +59,13 @@ export class KhmerTypingService {
       } catch (error) {
         console.error(error)
       }
+    }
+  }
+  checkCombinableVowel(previousValue:string,currentValue:string){
+    if(previousValue==='ោ' && currentValue==='ះ' || previousValue==='ា' && currentValue==='ំ'){
+      return true
+    }else{
+      return false;
     }
   }
   getCharCodeAt(value: string) {
