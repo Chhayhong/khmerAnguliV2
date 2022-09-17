@@ -1,67 +1,97 @@
 import { Injectable } from '@angular/core';
-import Graphemer from 'graphemer';
-import { Observable } from 'rxjs';
+import { from, pairwise, startWith, takeWhile } from 'rxjs';
+import combinableVowel from '../utility/combinable-vowel';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KhmerTypingService {
-  alphabetArray:any=[];
-  splitter = new Graphemer();
-  announceResultMessage:string = 'Congratulation, you have finished typing🎉'
+  alphabetArray: any = [];
+  unwantedStringList = [8203, 10]
+  announceResultMessage: string = 'អបអរសាទរ, អ្នកបានវាយបញ្ចប់ដោយជោគជ័យ🎉'
   constructor() { }
-  khmerAlphabetSplitter(khmerWord:string){
-    const graphemes = this.splitter.splitGraphemes(khmerWord);
-    graphemes.forEach(alphabet => {           
-      if(alphabet.charAt(0).charCodeAt(0)!==8203 && alphabet.charAt(0).charCodeAt(0)!==10){ //remove english space and /n character
-        if(alphabet.length>1){ //More than one string
-          let firstLetter = {khmer:alphabet.charAt(0),unicode:alphabet.charAt(0).charCodeAt(0),correct:false,inCorrectCount:0,current:false}
-          let secondLetter ={khmer:alphabet.charAt(1),unicode:alphabet.charAt(1).charCodeAt(0),correct:false,inCorrectCount:0,current:false}
-          this.alphabetArray.push(firstLetter,secondLetter)
-          if(alphabet.length>2){ //More than two string
-            let thidLetter ={khmer:alphabet.charAt(2),unicode:alphabet.charAt(2).charCodeAt(0),correct:false,inCorrectCount:0,current:false}
-            this.alphabetArray.push(thidLetter)
-          }
-        }else{          
-          this.alphabetArray.push({khmer:alphabet.charAt(0),unicode:alphabet.charAt(0).charCodeAt(0),correct:false,inCorrectCount:0,current:false})
-        }
-      }
-      });
-      this.alphabetArray[0].current=true; //set first alphabet as the first current key to type.
-      return this.alphabetArray as Observable<[]>;
+  khmerAlphabetSplitter(khmerWord: string) {
+    const splittedContent = from(khmerWord);
+    splittedContent.pipe(
+      pairwise(),
+   )
+   .subscribe(([previousValue, currentValue]) => { 
+       if(!this.checkUnwantedString(previousValue)){
+        return;
+       }   
+       if(previousValue==='ោ' && currentValue==='ះ' || previousValue==='ា' && currentValue==='ំ'){
+        console.log('You are destiny');
+        console.log(combinableVowel[previousValue]);
+        this.alphabetArray.push({ khmer:combinableVowel[previousValue], unicode: this.getCharCodeAt(previousValue), correct: false, inCorrectCount: 0, current: false })
+       }else{
+        this.alphabetArray.push({ khmer: this.getCharAt(previousValue), unicode: this.getCharCodeAt(previousValue), correct: false, inCorrectCount: 0, current: false })
+       }       
+   });
+    this.alphabetArray[0].current = true; //set first alphabet as the first current key to type.  
+    console.log(this.alphabetArray);
+      
+    return this.alphabetArray;
   }
-  playTime(input:any,index:number){
-    if(this.checkIfContentToTypeRemain()){
+  specialAlphabetConverter(alphabet: string) {
+    switch (alphabet) {
+      case ' ': {
+        return 'ដកឃ្លា'
+      }
+      case '្': {
+        return 'ដាកជើង'
+      }
+      default: {
+        return alphabet
+      }
+    }
+  }
+  playTime(input: any, index: number) {
+    if (this.checkIfContentToTypeRemain()) {
       return
     }
     this.setCurrentAlphabetAsCurrentTyping()
-    if(input===this.alphabetArray[index]?.khmer){
-      this.alphabetArray[index].correct=true;
-      this.alphabetArray[index].current=true;
-    }else{
-        try { //fix error of undefined when restart typing.
-          this.alphabetArray[index].current=true;
-        this.alphabetArray[index].inCorrectCount=this.alphabetArray[index].inCorrectCount +1;
-        } catch (error) {
-          console.error(error)
-        }
+    if (input === this.alphabetArray[index]?.khmer) {
+      this.alphabetArray[index].correct = true;
+      this.alphabetArray[index].current = true;
+    } else {
+      try { //fix error of undefined when restart typing.
+        this.alphabetArray[index].current = true;
+        this.alphabetArray[index].inCorrectCount = this.alphabetArray[index].inCorrectCount + 1;
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
-  announceResult(){
+  getCharCodeAt(value: string) {
+    return value.charAt(0).charCodeAt(0)
+  }
+  getCharAt(value: string) {
+    return value.charAt(0)
+  }
+  checkUnwantedString(value: string) { //remove Zero-width space and /n character   
+    const skip = this.unwantedStringList
+    const charCode = this.getCharCodeAt(value)
+    if (!(skip[0] === charCode || skip[1] === charCode)) {
+      return true
+    } else {
+      return false
+    }
+  }
+  announceResult() {
     return this.announceResultMessage;
   }
-  resetContent(){
-    this.alphabetArray=[]
+  resetContent() {
+    this.alphabetArray = []
   }
-  setGameToEnd(){
-    return null;
+  setGameToEnd() {
+    return 'អត់ទាន់ធ្វើទេ 😋';
   }
-  setCurrentAlphabetAsCurrentTyping(){
-    if(this.alphabetArray.length!==0 && !this.alphabetArray[0].current){
-      this.alphabetArray[0].current=true;
+  setCurrentAlphabetAsCurrentTyping() {
+    if (this.alphabetArray.length !== 0 && !this.alphabetArray[0].current) {
+      this.alphabetArray[0].current = true;
     }
   }
-  checkIfContentToTypeRemain(){
-    return this.alphabetArray.length===0;
+  checkIfContentToTypeRemain() {
+    return this.alphabetArray.length === 0;
   }
 }
