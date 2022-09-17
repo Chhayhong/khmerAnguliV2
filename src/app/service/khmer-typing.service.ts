@@ -22,7 +22,7 @@ export class KhmerTypingService {
        if(previousValue==='ោ' && currentValue==='ះ' || previousValue==='ា' && currentValue==='ំ'){
         console.log('You are destiny');
         console.log(combinableVowel[previousValue]);
-        this.alphabetArray.push({ khmer:combinableVowel[previousValue], unicode: this.getCharCodeAt(previousValue), correct: false, inCorrectCount: 0, current: false })
+        this.alphabetArray.push({ khmer:combinableVowel[previousValue], unicode: this.getCharCodeAt(combinableVowel[previousValue]), correct: false, inCorrectCount: 0, current: false })
        }else{
         this.alphabetArray.push({ khmer: this.getCharAt(previousValue), unicode: this.getCharCodeAt(previousValue), correct: false, inCorrectCount: 0, current: false })
        }       
