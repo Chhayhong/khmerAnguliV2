@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Renderer2, } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { interval, Subject } from 'rxjs';
+import { interval, of, Subject, takeUntil } from 'rxjs';
 import { KhmerTypingService } from 'src/app/service/khmer-typing.service';
 import mapping from "../../utility/mapping";
 import localContent from 'src/app/utility/local-content';
+import combinableVowel from 'src/app/utility/combinable-vowel';
 @Component({
   selector: 'app-typing-textarea',
   templateUrl: './typing-textarea.component.html',
@@ -17,8 +18,8 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
   displayCurrentAlphabet: string = '';
   textAreaControl = new FormControl('');
   startIndex = 0; 
-  keepChecking = interval(0);
-  currentinput:string=''
+  // keepChecking = interval(0);
+  currentinput:any=''
   announceResult:string='';
   keyboard:any=''
   constructor(
@@ -32,6 +33,53 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
   ngOnInit() {
       this.initPlayScreen()
   }
+ 
+  initPlayScreen() {
+    const inputValue= of(this.textAreaControl).pipe()
+    inputValue.subscribe((value)=>{
+      value.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((input)=>{
+   if (input != null) {      
+        if(this.checkCombinableVowel()){
+          input=combinableVowel[input]
+        }
+        this.currentinput=input
+        if (input == this.typingContent[this.startIndex]?.khmer) {
+          this.khmerTypingService.playTime(input, this.startIndex)
+          this.startIndex = this.startIndex + 1
+          this.keyboard=mapping[this.typingContent[this.startIndex]?.khmer]
+          this.displayCurrentAlphabet = this.khmerTypingService.specialAlphabetConverter(this.typingContent[this.startIndex]?.khmer)
+          this.textAreaControl.reset()          
+        }else{
+          this.khmerTypingService.playTime(input, this.startIndex)
+          console.log(input, ' is incorrect');
+          
+          this.textAreaControl.reset()
+        }
+        this.textAreaControl.reset()
+        try {
+          this.onEndGame()
+        } catch (error) {
+          console.warn('Under investigation this unsubscribed error xD ',error);
+        }
+      }
+      })
+    });
+  }
+  checkCombinableVowel(){
+    return this.khmerTypingService.specialAlphabetConverter(this.typingContent[this.startIndex]?.type)==='combinableVowel'?true:false;
+  }
+  onEndGame(){
+    if(this.startIndex===this.typingContent.length){
+      this.announceResult=this.khmerTypingService.announceResult().toString()
+      this.textAreaControl.disable();
+      this.startIndex=0;
+      this.khmerTypingService.resetContent()
+      console.log('No more content to type so destroyed!!!');
+    }
+  }
+
   restartTyping(){
     try {
       this.startIndex=0
@@ -45,45 +93,9 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
       console.error("the error: ", e)
     }
   }
-  initPlayScreen() {
-    this.textAreaControl.statusChanges.subscribe((value) => {
-      const input = this.textAreaControl.value
-      if (value && input != null) {
-        this.currentinput=input
-        if (input == this.typingContent[this.startIndex]?.khmer) {
-          this.khmerTypingService.playTime(input, this.startIndex)
-          this.startIndex = this.startIndex + 1
-          this.keyboard=mapping[this.typingContent[this.startIndex]?.khmer]
-          this.displayCurrentAlphabet = this.khmerTypingService.specialAlphabetConverter(this.typingContent[this.startIndex]?.khmer)
-          this.textAreaControl.reset()          
-        }else{
-          this.khmerTypingService.playTime(input, this.startIndex)
-          this.textAreaControl.reset()
-        }
-        this.textAreaControl.reset()
-        try {
-          this.onEndGame()
-        } catch (error) {
-          console.warn('Under investigation this unsubscribed error xD ',error);
-        }
-      }
-    })    
-  }
 
-  onEndGame(){
-    if(this.startIndex===this.typingContent.length){
-      this.announceResult=this.khmerTypingService.announceResult().toString()
-      // this.destroy$.next(true);
-      // this.destroy$.unsubscribe();
-      this.textAreaControl.disable();
-      this.startIndex=0;
-      this.khmerTypingService.announceResult();
-      this.khmerTypingService.resetContent()
-      console.log('No more content to type so destroyed!!!');
-    }
-  }
   ngOnDestroy(): void {
-    // when destroy$ already unsubscribed
+    // try catch to avoid loop of error in console.
     try {
       this.destroy$.next(true);
       this.destroy$.unsubscribe();
