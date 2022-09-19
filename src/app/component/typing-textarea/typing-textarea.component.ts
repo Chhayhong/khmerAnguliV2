@@ -43,6 +43,7 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
    if (input != null) {      
         if(this.checkCombinableVowel()){
           input=combinableVowel[input]
+          this.startIndex = this.startIndex + 1
         }
         this.currentinput=input
         if (input == this.typingContent[this.startIndex]?.khmer) {
@@ -52,16 +53,14 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
           this.displayCurrentAlphabet = this.khmerTypingService.specialAlphabetConverter(this.typingContent[this.startIndex]?.khmer)
           this.textAreaControl.reset()          
         }else{
-          this.khmerTypingService.playTime(input, this.startIndex)
-          console.log(input, ' is incorrect');
-          
+          this.khmerTypingService.playTime(input, this.startIndex)          
           this.textAreaControl.reset()
         }
         this.textAreaControl.reset()
         try {
           this.onEndGame()
         } catch (error) {
-          console.warn('Under investigation this unsubscribed error xD ',error);
+          console.warn('Error :  ',error);
         }
       }
       })
