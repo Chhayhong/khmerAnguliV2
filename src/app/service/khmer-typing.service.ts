@@ -32,7 +32,9 @@ export class KhmerTypingService {
         this.alphabetArray.push({ khmer: this.getCharAt(previousValue), unicode: this.getCharCodeAt(previousValue), correct: false, inCorrectCount: 0, current: false,type:'single' })
        }       
    });
-    this.alphabetArray[0].current = true; //set first alphabet as the first current key to type.                
+    this.alphabetArray[0].current = true; //set first alphabet as the first current key to type.      
+    console.log(this.alphabetArray);
+              
     return this.alphabetArray;
   }
   specialAlphabetConverter(alphabet: string) {

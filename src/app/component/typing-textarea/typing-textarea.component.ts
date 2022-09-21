@@ -22,6 +22,9 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
   currentinput:any=''
   announceResult:string='';
   keyboard:any=''
+  comboKeyCounter=0;
+   firstInput=''
+   secondInput=''
   constructor(
     private khmerTypingService: KhmerTypingService,
     private renderer: Renderer2
@@ -40,10 +43,21 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
       value.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((input)=>{
-   if (input != null) {      
+   if (input != null) {    
         if(this.checkCombinableVowel()){
-          input=combinableVowel[input]
-          this.startIndex = this.startIndex + 1
+          this.comboKeyCounter++ 
+          if(this.comboKeyCounter===1){
+            this.firstInput=input
+          }
+          if(this.comboKeyCounter===2){
+            this.secondInput=input
+            if(this.firstInput==='ា' && this.secondInput==='ំ' || this.firstInput==='ោ' && this.secondInput==='ះ'){
+              input=combinableVowel[this.firstInput]
+              this.firstInput=''
+              this.secondInput=''
+            }
+            this.comboKeyCounter=0
+          }
         }
         this.currentinput=input
         if (input == this.typingContent[this.startIndex]?.khmer) {
