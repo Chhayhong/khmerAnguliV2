@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Renderer2, } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { interval, of, Subject, takeUntil } from 'rxjs';
+import { of, Subject, takeUntil } from 'rxjs';
 import { KhmerTypingService } from 'src/app/service/khmer-typing.service';
 import mapping from "../../utility/mapping";
 import localContent from 'src/app/utility/local-content';

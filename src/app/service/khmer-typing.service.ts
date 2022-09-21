@@ -8,6 +8,7 @@ import combinableVowel from '../utility/combinable-vowel';
 export class KhmerTypingService {
   alphabetArray: any = [];
   unwantedStringList = [8203, 10]
+  meetCominableVowel=false;
   announceResultMessage: string = 'អបអរសាទរ, អ្នកបានវាយបញ្ចប់ដោយជោគជ័យ🎉'
   constructor() { }
   //Todo : Fix when meet ាំ keyboard not accept the correct value.
@@ -21,12 +22,17 @@ export class KhmerTypingService {
         return;
        }   
        if(this.checkCombinableVowel(previousValue,currentValue)){
+        this.meetCominableVowel=true
         this.alphabetArray.push({ khmer:combinableVowel[previousValue], unicode: this.getCharCodeAt(combinableVowel[previousValue]), correct: false, inCorrectCount: 0, current: false,type:'combinableVowel' })
-       }else{         
+      }else{         
+        if(this.meetCominableVowel){ //seemly skip one object​ to push into array if meet combinable vowel.
+          this.meetCominableVowel=false
+          return
+        }
         this.alphabetArray.push({ khmer: this.getCharAt(previousValue), unicode: this.getCharCodeAt(previousValue), correct: false, inCorrectCount: 0, current: false,type:'single' })
        }       
    });
-    this.alphabetArray[0].current = true; //set first alphabet as the first current key to type.            
+    this.alphabetArray[0].current = true; //set first alphabet as the first current key to type.                
     return this.alphabetArray;
   }
   specialAlphabetConverter(alphabet: string) {
