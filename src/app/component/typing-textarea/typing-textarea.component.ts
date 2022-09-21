@@ -48,13 +48,14 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
           this.comboKeyCounter++ 
           if(this.comboKeyCounter===1){
             this.firstInput=input
-          }
+          }          
           if(this.comboKeyCounter===2){
             this.secondInput=input
             if(this.firstInput==='ា' && this.secondInput==='ំ' || this.firstInput==='ោ' && this.secondInput==='ះ'){
               input=combinableVowel[this.firstInput]
               this.firstInput=''
               this.secondInput=''
+              this.comboKeyCounter=0
             }
             this.comboKeyCounter=0
           }
