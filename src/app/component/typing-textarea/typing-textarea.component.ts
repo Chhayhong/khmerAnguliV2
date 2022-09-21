@@ -12,7 +12,7 @@ import combinableVowel from 'src/app/utility/combinable-vowel';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TypingTextareaComponent implements OnInit, OnDestroy {
-  @Input() typingTextAreaData =  localContent['debug'];
+  @Input() typingTextAreaData =localContent['ប្រទេសកម្ពុជា'];
   destroy$: Subject<boolean> = new Subject<boolean>();
   // forceFocus: boolean = true;
   displayCurrentAlphabet: string = '';
@@ -82,7 +82,7 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
     });
   }
   checkCombinableVowel(){
-    return this.khmerTypingService.specialAlphabetConverter(this.typingContent[this.startIndex]?.type)==='combinableVowel'?true:false;
+    return this.typingContent[this.startIndex]?.type==='combinableVowel'?true:false;
   }
   onEndGame(){
     if(this.startIndex===this.typingContent.length){

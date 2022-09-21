@@ -25,15 +25,15 @@ export class KhmerTypingService {
         this.meetCominableVowel=true
         this.alphabetArray.push({ khmer:combinableVowel[previousValue], unicode: this.getCharCodeAt(combinableVowel[previousValue]), correct: false, inCorrectCount: 0, current: false,type:'combinableVowel' })
       }else{         
-        if(this.meetCominableVowel){ //seemly skip one object​ to push into array if meet combinable vowel.
+        if(this.meetCominableVowel){ //simply skip one object​ to push into array if meet combinable vowel.
           this.meetCominableVowel=false
           return
         }
+        //TODO: Fix after restart typing, the first string is missing :(
         this.alphabetArray.push({ khmer: this.getCharAt(previousValue), unicode: this.getCharCodeAt(previousValue), correct: false, inCorrectCount: 0, current: false,type:'single' })
        }       
    });
     this.alphabetArray[0].current = true; //set first alphabet as the first current key to type.      
-    console.log(this.alphabetArray);
               
     return this.alphabetArray;
   }
