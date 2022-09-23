@@ -8,30 +8,30 @@ import combinableVowel from '../utility/combinable-vowel';
 export class KhmerTypingService {
   alphabetArray: any = [];
   unwantedStringList = [8203, 10]
-  meetCominableVowel=false;
+  meetCominableVowel = false;
   announceResultMessage: string = 'អបអរសាទរ, អ្នកបានវាយបញ្ចប់ដោយជោគជ័យ🎉'
   constructor() { }
   khmerAlphabetSplitter(khmerWord: string) {
     const splittedContent = from(this.takeOnlyOneSpace(khmerWord));
     splittedContent.pipe(
       pairwise(),
-   )
-   .subscribe(([previousValue, currentValue]) => { 
-       if(this.checkUnwantedString(previousValue)){
-        return;
-       }   
-       if(this.checkCombinableVowel(previousValue,currentValue)){
-        this.meetCominableVowel=true
-        this.alphabetArray.push({ khmer:combinableVowel[previousValue], unicode: this.getCharCodeAt(combinableVowel[previousValue]), correct: false, inCorrectCount: 0, current: false,type:'combinableVowel' })
-      }else{         
-        if(this.meetCominableVowel){ //simply skip one object​ to push into array if meet combinable vowel.
-          this.meetCominableVowel=false
-          return
+    )
+      .subscribe(([previousValue, currentValue]) => {
+        if (this.checkUnwantedString(previousValue)) {
+          return;
         }
-        //TODO: Fix after restart typing, the first string is missing :(
-        this.alphabetArray.push({ khmer: this.getCharAt(previousValue), unicode: this.getCharCodeAt(previousValue), correct: false, inCorrectCount: 0, current: false,type:'single' })
-       }       
-   });
+        if (this.checkCombinableVowel(previousValue, currentValue)) {
+          this.meetCominableVowel = true
+          this.alphabetArray.push({ khmer: combinableVowel[previousValue], unicode: this.getCharCodeAt(combinableVowel[previousValue]), correct: false, inCorrectCount: 0, current: false, type: 'combinableVowel' })
+        } else {
+          if (this.meetCominableVowel) { //simply skip one object​ to push into array if meet combinable vowel.
+            this.meetCominableVowel = false
+            return
+          }
+          //TODO: Fix after restart typing, the first string is missing :(
+          this.alphabetArray.push({ khmer: this.getCharAt(previousValue), unicode: this.getCharCodeAt(previousValue), correct: false, inCorrectCount: 0, current: false, type: 'single' })
+        }
+      });
     this.alphabetArray[0].current = true; //set first alphabet as the first current key to type.          
     return this.alphabetArray;
   }
@@ -48,7 +48,7 @@ export class KhmerTypingService {
       }
     }
   }
-  playTime(input: any, index: number) {    
+  playTime(input: any, index: number) {
     if (this.checkIfContentToTypeRemain()) {
       return
     }
@@ -65,10 +65,10 @@ export class KhmerTypingService {
       }
     }
   }
-  checkCombinableVowel(previousValue:any,currentValue:string){
-    if(previousValue==='ោ' && currentValue==='ះ' || previousValue==='ា' && currentValue==='ំ'){
+  checkCombinableVowel(previousValue: any, currentValue: string) {
+    if (previousValue === 'ោ' && currentValue === 'ះ' || previousValue === 'ា' && currentValue === 'ំ') {
       return true
-    }else{
+    } else {
       return false;
     }
   }
@@ -87,13 +87,14 @@ export class KhmerTypingService {
       return false
     }
   }
-  takeOnlyOneSpace(value:string){ // just read the method name xD
+  takeOnlyOneSpace(value: string) { // just read the method name xD
     return value.trim().replace(/\s+/g, " ")
   }
   announceResult() {
     return this.announceResultMessage;
   }
   resetContent() {
+    this.meetCominableVowel=false; //this should be fix the missing first string after restart typing.
     this.alphabetArray = []
   }
   setGameToEnd() {
