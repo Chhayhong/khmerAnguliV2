@@ -180,5 +180,7 @@ const khmerMapping:any = {
     'Y':['LEFT_SHIFT','Y'],
     'z':['Z'],
     'Z':['LEFT_SHIFT','Z'],
+    '-':['HYPHEN'],
+
 }
 export default khmerMapping;

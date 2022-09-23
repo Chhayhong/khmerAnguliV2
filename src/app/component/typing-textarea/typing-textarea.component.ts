@@ -12,7 +12,7 @@ import combinableVowel from 'src/app/utility/combinable-vowel';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TypingTextareaComponent implements OnInit, OnDestroy {
-  @Input() typingTextAreaData =localContent['ប្រទេសកម្ពុជា'];
+  @Input() typingTextAreaData =localContent['debug'];
   destroy$: Subject<boolean> = new Subject<boolean>();
   // forceFocus: boolean = true;
   displayCurrentAlphabet: string = '';
@@ -90,7 +90,6 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
       this.textAreaControl.disable();
       this.startIndex=0;
       this.khmerTypingService.resetContent()
-      console.log('No more content to type so destroyed!!!');
     }
   }
 
@@ -115,7 +114,7 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
       this.destroy$.unsubscribe();
       this.textAreaControl.disable()
       this.khmerTypingService.resetContent()
-      console.log('Component Destroyed!!!')
+      this.destroy$.unsubscribe() //fixed after restart typing the first string is missing.
     } catch (e) {
       console.error("the error: ", e)
     }

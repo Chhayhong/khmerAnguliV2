@@ -11,9 +11,8 @@ export class KhmerTypingService {
   meetCominableVowel=false;
   announceResultMessage: string = 'អបអរសាទរ, អ្នកបានវាយបញ្ចប់ដោយជោគជ័យ🎉'
   constructor() { }
-  //Todo : Fix when meet ាំ keyboard not accept the correct value.
   khmerAlphabetSplitter(khmerWord: string) {
-    const splittedContent = from(khmerWord);
+    const splittedContent = from(this.takeOnlyOneSpace(khmerWord));
     splittedContent.pipe(
       pairwise(),
    )
@@ -33,8 +32,7 @@ export class KhmerTypingService {
         this.alphabetArray.push({ khmer: this.getCharAt(previousValue), unicode: this.getCharCodeAt(previousValue), correct: false, inCorrectCount: 0, current: false,type:'single' })
        }       
    });
-    this.alphabetArray[0].current = true; //set first alphabet as the first current key to type.      
-              
+    this.alphabetArray[0].current = true; //set first alphabet as the first current key to type.          
     return this.alphabetArray;
   }
   specialAlphabetConverter(alphabet: string) {
@@ -88,6 +86,9 @@ export class KhmerTypingService {
     } else {
       return false
     }
+  }
+  takeOnlyOneSpace(value:string){ // just read the method name xD
+    return value.trim().replace(/\s+/g, " ")
   }
   announceResult() {
     return this.announceResultMessage;
