@@ -44,7 +44,9 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
     inputValue.subscribe((value) => {
       value.valueChanges
         .pipe(takeUntil(this.destroy$))
-        .subscribe((input) => {          
+        .subscribe((input) => {
+          console.log(input);
+          
           if (input != null) {
             if (this.checkCombinableVowel()) {
               this.comboKeyCounter++
@@ -56,15 +58,15 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
               }
               if (this.comboKeyCounter === 2) {
                 this.secondInput = input
-                if(!nextCombinableVowel[this.secondInput]){
+                if (!nextCombinableVowel[this.secondInput]) {
                   this.resetComboKeys()
                 }
                 //TODO : there is another combo vowel which has the same end vowel like ោះ is ុះ
                 //Author : well it will be complicated
-                if (this.firstInput === 'ា' && this.secondInput === 'ំ' || this.firstInput === 'ោ' && this.secondInput === 'ះ'|| this.firstInput === 'ុ' && this.secondInput === 'ះ' ) {
+                if (this.checkBothVowel()) {
                   input = combinableVowel[this.firstInput]
                   this.resetComboKeys()
-                } 
+                }
               }
             }
             if (this.comboKeyCounter > 2) {
@@ -95,10 +97,17 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
         })
     });
   }
+  checkBothVowel() {
+    if (this.firstInput === '៊' && this.secondInput === 'ី' || this.firstInput === 'ា' && this.secondInput === 'ំ' || this.firstInput === 'ោ' && this.secondInput === 'ះ' || this.firstInput === 'ុ' && this.secondInput === 'ះ') {
+      return true;
+    } else {
+      return false;
+    }
+  }
   checkCombinableVowel() {
     return this.typingContent[this.startIndex]?.type === 'combinableVowel' ? true : false;
   }
-  resetComboKeys(){
+  resetComboKeys() {
     this.firstInput = ''
     this.secondInput = ''
     this.comboKeyCounter = 0

@@ -18,7 +18,7 @@ export class KhmerTypingService {
     )
       .subscribe(([previousValue, currentValue]) => {
         console.log(previousValue,currentValue);
-        console.log(this.checkCombinableVowel(previousValue, currentValue));
+        console.log('Combinable vowel : ',this.checkCombinableVowel(previousValue, currentValue));
         
         if (this.checkUnwantedString(previousValue)) {
           return;
@@ -69,7 +69,7 @@ export class KhmerTypingService {
     }
   }
   checkCombinableVowel(previousValue: any, currentValue: string) {
-    if (previousValue === 'ោ' && currentValue === 'ះ' || previousValue === 'ា' && currentValue === 'ំ' || previousValue === 'ុ' && currentValue === 'ះ') {
+    if (previousValue === '៊' && currentValue === 'ី' || previousValue === 'ោ' && currentValue === 'ះ' || previousValue === 'ា' && currentValue === 'ំ' || previousValue === 'ុ' && currentValue === 'ះ') {
       return true
     } else {
       return false;
