@@ -44,9 +44,7 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
     inputValue.subscribe((value) => {
       value.valueChanges
         .pipe(takeUntil(this.destroy$))
-        .subscribe((input) => {
-          console.log(input);
-          
+        .subscribe((input) => {          
           if (input != null) {
             if (this.checkCombinableVowel()) {
               this.comboKeyCounter++
@@ -98,7 +96,7 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
     });
   }
   checkBothVowel() {
-    if (this.firstInput === '៊' && this.secondInput === 'ី' || this.firstInput === 'ា' && this.secondInput === 'ំ' || this.firstInput === 'ោ' && this.secondInput === 'ះ' || this.firstInput === 'ុ' && this.secondInput === 'ះ') {
+    if (this.firstInput === 'េ' && this.secondInput === 'ះ' ||this.firstInput === '៊' && this.secondInput === 'ី' || this.firstInput === 'ា' && this.secondInput === 'ំ' || this.firstInput === 'ោ' && this.secondInput === 'ះ' || this.firstInput === 'ុ' && this.secondInput === 'ះ') {
       return true;
     } else {
       return false;
