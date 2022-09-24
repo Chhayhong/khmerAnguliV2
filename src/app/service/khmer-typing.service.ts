@@ -17,6 +17,9 @@ export class KhmerTypingService {
       pairwise(),
     )
       .subscribe(([previousValue, currentValue]) => {
+        console.log(previousValue,currentValue);
+        console.log(this.checkCombinableVowel(previousValue, currentValue));
+        
         if (this.checkUnwantedString(previousValue)) {
           return;
         }
@@ -66,14 +69,18 @@ export class KhmerTypingService {
     }
   }
   checkCombinableVowel(previousValue: any, currentValue: string) {
-    if (previousValue === 'ោ' && currentValue === 'ះ' || previousValue === 'ា' && currentValue === 'ំ') {
+    if (previousValue === 'ោ' && currentValue === 'ះ' || previousValue === 'ា' && currentValue === 'ំ' || previousValue === 'ុ' && currentValue === 'ះ') {
       return true
     } else {
       return false;
     }
   }
   getCharCodeAt(value: string) {
-    return value.charAt(0).charCodeAt(0)
+    if(!value){
+      console.warn('Error : maybe it is another combinable vowel which is not handling.')
+      return
+    }
+    return value.charCodeAt(0)
   }
   getCharAt(value: string) {
     return value.charAt(0)

@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Renderer2, } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, RendererStyleFlags2, } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { of, Subject, takeUntil } from 'rxjs';
 import { KhmerTypingService } from 'src/app/service/khmer-typing.service';
 import mapping from "../../utility/mapping";
 import localContent from 'src/app/utility/local-content';
 import combinableVowel from 'src/app/utility/combinable-vowel';
+import nextCombinableVowel from 'src/app/utility/next-combinable-vowel';
 @Component({
   selector: 'app-typing-textarea',
   templateUrl: './typing-textarea.component.html',
@@ -27,7 +28,8 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
   secondInput = ''
   constructor(
     private khmerTypingService: KhmerTypingService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private el: ElementRef
   ) {
     this.displayCurrentAlphabet = this.typingTextAreaData[0]
     this.keyboard = mapping[this.typingTextAreaData[0]]
@@ -38,36 +40,48 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
   }
 
   initPlayScreen() {
-    const inputValue = of(this.textAreaControl).pipe()
+    const inputValue = of(this.textAreaControl)
     inputValue.subscribe((value) => {
       value.valueChanges
         .pipe(takeUntil(this.destroy$))
-        .subscribe((input) => {
+        .subscribe((input) => {          
           if (input != null) {
             if (this.checkCombinableVowel()) {
               this.comboKeyCounter++
               if (this.comboKeyCounter === 1) {
                 this.firstInput = input
+                if (!combinableVowel[this.firstInput]) {
+                  this.resetComboKeys()
+                }
               }
               if (this.comboKeyCounter === 2) {
                 this.secondInput = input
-                if (this.firstInput === 'ា' && this.secondInput === 'ំ' || this.firstInput === 'ោ' && this.secondInput === 'ះ') {
-                  input = combinableVowel[this.firstInput]
-                  this.firstInput = ''
-                  this.secondInput = ''
-                  this.comboKeyCounter = 0
+                if(!nextCombinableVowel[this.secondInput]){
+                  this.resetComboKeys()
                 }
-                this.comboKeyCounter = 0
+                //TODO : there is another combo vowel which has the same end vowel like ោះ is ុះ
+                //Author : well it will be complicated
+                if (this.firstInput === 'ា' && this.secondInput === 'ំ' || this.firstInput === 'ោ' && this.secondInput === 'ះ'|| this.firstInput === 'ុ' && this.secondInput === 'ះ' ) {
+                  input = combinableVowel[this.firstInput]
+                  this.resetComboKeys()
+                } 
               }
             }
+            if (this.comboKeyCounter > 2) {
+              this.comboKeyCounter = 0
+            }
+            console.log(' first key : ', this.firstInput, 'second key : ', this.secondInput, ' combo count : ', this.comboKeyCounter);
+
             this.currentinput = input
             if (input == this.typingContent[this.startIndex]?.khmer) {
               this.khmerTypingService.playTime(input, this.startIndex)
+              this.markIncorrectAlphabet(this.startIndex, '#ffff')
               this.startIndex = this.startIndex + 1
               this.keyboard = mapping[this.typingContent[this.startIndex]?.khmer]
               this.displayCurrentAlphabet = this.khmerTypingService.specialAlphabetConverter(this.typingContent[this.startIndex]?.khmer)
               this.textAreaControl.reset()
             } else {
+              this.markIncorrectAlphabet(this.startIndex, 'red')
               this.khmerTypingService.playTime(input, this.startIndex)
               this.textAreaControl.reset()
             }
@@ -84,15 +98,25 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
   checkCombinableVowel() {
     return this.typingContent[this.startIndex]?.type === 'combinableVowel' ? true : false;
   }
+  resetComboKeys(){
+    this.firstInput = ''
+    this.secondInput = ''
+    this.comboKeyCounter = 0
+  }
   onEndGame() {
     if (this.startIndex === this.typingContent.length) {
       this.announceResult = this.khmerTypingService.announceResult().toString()
       this.textAreaControl.disable();
       this.startIndex = 0;
+      this.resetComboKeys()
       this.khmerTypingService.resetContent()
     }
   }
-
+  markIncorrectAlphabet(alphabetIndex: number, color: string) {
+    const alphabet = this.el.nativeElement.querySelector('.alphabet' + alphabetIndex);
+    this.renderer.setStyle(alphabet, 'text-decoration', 'underline', RendererStyleFlags2.Important + RendererStyleFlags2.DashCase);
+    this.renderer.setStyle(alphabet, 'text-decoration-color', color, RendererStyleFlags2.Important + RendererStyleFlags2.DashCase);
+  }
   restartTyping() {
     try {
       this.startIndex = 0
@@ -102,13 +126,13 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
       this.typingContent = this.khmerTypingService.khmerAlphabetSplitter(this.typingTextAreaData);
       this.displayCurrentAlphabet = this.typingTextAreaData[0]
       this.currentinput = ''
+      this.resetComboKeys()
     } catch (e) {
       console.error("the error: ", e)
     }
   }
 
   ngOnDestroy(): void {
-    // try catch to avoid loop of error in console.
     try {
       this.destroy$.next(true);
       this.destroy$.unsubscribe();

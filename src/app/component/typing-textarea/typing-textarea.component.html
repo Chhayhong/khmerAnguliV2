@@ -2,8 +2,8 @@
     <div class="play-screen">
         <div class="typing-content">
             <br>
-            <span *ngFor="let item of typingContent; let i = index">
-                <span [style.color]="typingContent[i].current?'#596DD2':'black'">{{item.khmer}}</span>
+            <span *ngFor="let item of typingContent; let i = index"   >
+                <span [class]="'alphabet'+i" [style.color]="typingContent[i].current?'#596DD2':'black'">{{item.khmer}}</span>
             </span>
             <div style="margin-bottom: 300px;"></div>
         </div>

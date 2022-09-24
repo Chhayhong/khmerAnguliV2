@@ -10,6 +10,9 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  const error =  'ះ'.charAt(0).charCodeAt(0)
+  console.log(error);
+  
   }
 
 }
