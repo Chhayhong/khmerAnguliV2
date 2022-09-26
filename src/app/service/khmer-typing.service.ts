@@ -24,7 +24,9 @@ export class KhmerTypingService {
         }
         if (this.checkCombinableVowel(previousValue, currentValue)) {
           this.meetCominableVowel = true
-          this.alphabetArray.push({ khmer: combinableVowel[previousValue], unicode: this.getCharCodeAt(combinableVowel[previousValue]), correct: false, inCorrectCount: 0, current: false, type: 'combinableVowel' })
+          this.alphabetArray.push({ khmer: this.scopeOutVowel(previousValue,currentValue), unicode: this.getCharCodeAt(this.scopeOutVowel(previousValue,currentValue)), correct: false, inCorrectCount: 0, current: false, type: 'combinableVowel' })
+
+          // this.alphabetArray.push({ khmer: combinableVowel[previousValue], unicode: this.getCharCodeAt(combinableVowel[previousValue]), correct: false, inCorrectCount: 0, current: false, type: 'combinableVowel' })
         } else {
           if (this.meetCominableVowel) { //simply skip one object​ to push into array if meet combinable vowel.
             this.meetCominableVowel = false
@@ -67,8 +69,15 @@ export class KhmerTypingService {
       }
     }
   }
+  scopeOutVowel(previousValue:string,currentValue:string){
+    if(previousValue === 'ុ' && currentValue === 'ី'){
+      return `ុី`
+    }else{
+      return combinableVowel[previousValue]
+    }
+  }
   checkCombinableVowel(previousValue: any, currentValue: string) {
-    if (previousValue === 'េ' && currentValue === 'ះ' || previousValue === '៊' && currentValue === 'ី' || previousValue === 'ោ' && currentValue === 'ះ' || previousValue === 'ា' && currentValue === 'ំ' || previousValue === 'ុ' && currentValue === 'ះ') {
+    if (previousValue === 'ុ' && currentValue === 'ី' ||previousValue === 'េ' && currentValue === 'ះ' || previousValue === '៊' && currentValue === 'ី' || previousValue === 'ោ' && currentValue === 'ះ' || previousValue === 'ា' && currentValue === 'ំ' || previousValue === 'ុ' && currentValue === 'ះ') {
       return true
     } else {
       return false;
