@@ -17,14 +17,13 @@ export class KhmerTypingService {
       pairwise(),
     )
       .subscribe(([previousValue, currentValue]) => {
-        console.log('Combinable vowel : ',previousValue,currentValue,this.checkCombinableVowel(previousValue, currentValue));
-        
+
         if (this.checkUnwantedString(previousValue)) {
           return;
         }
         if (this.checkCombinableVowel(previousValue, currentValue)) {
           this.meetCominableVowel = true
-          this.alphabetArray.push({ khmer: this.scopeOutVowel(previousValue,currentValue), unicode: this.getCharCodeAt(this.scopeOutVowel(previousValue,currentValue)), correct: false, inCorrectCount: 0, current: false, type: 'combinableVowel' })
+          this.alphabetArray.push({ khmer: this.scopeOutVowel(previousValue, currentValue), unicode: this.getCharCodeAt(this.scopeOutVowel(previousValue, currentValue)), correct: false, inCorrectCount: 0, current: false, type: 'combinableVowel' })
 
           // this.alphabetArray.push({ khmer: combinableVowel[previousValue], unicode: this.getCharCodeAt(combinableVowel[previousValue]), correct: false, inCorrectCount: 0, current: false, type: 'combinableVowel' })
         } else {
@@ -69,22 +68,22 @@ export class KhmerTypingService {
       }
     }
   }
-  scopeOutVowel(previousValue:string,currentValue:string){
-    if(previousValue === 'ុ' && currentValue === 'ី'){
+  scopeOutVowel(previousValue: string, currentValue: string) {
+    if (previousValue === 'ុ' && currentValue === 'ី') {
       return `ុី`
-    }else{
+    } else {
       return combinableVowel[previousValue]
     }
   }
   checkCombinableVowel(previousValue: any, currentValue: string) {
-    if (previousValue === 'ុ' && currentValue === 'ី' ||previousValue === 'េ' && currentValue === 'ះ' || previousValue === '៊' && currentValue === 'ី' || previousValue === 'ោ' && currentValue === 'ះ' || previousValue === 'ា' && currentValue === 'ំ' || previousValue === 'ុ' && currentValue === 'ះ') {
+    if (previousValue === 'ុ' && currentValue === 'ី' || previousValue === 'េ' && currentValue === 'ះ' || previousValue === '៊' && currentValue === 'ី' || previousValue === 'ោ' && currentValue === 'ះ' || previousValue === 'ា' && currentValue === 'ំ' || previousValue === 'ុ' && currentValue === 'ះ') {
       return true
     } else {
       return false;
     }
   }
   getCharCodeAt(value: string) {
-    if(!value){
+    if (!value) {
       console.warn('Error : maybe it is another combinable vowel which is not handling.')
       return
     }
@@ -109,7 +108,7 @@ export class KhmerTypingService {
     return this.announceResultMessage;
   }
   resetContent() {
-    this.meetCominableVowel=false; //this should be fix the missing first string after restart typing.
+    this.meetCominableVowel = false; //this should be fix the missing first string after restart typing.
     this.alphabetArray = []
   }
   setGameToEnd() {

@@ -68,8 +68,6 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
             if (this.comboKeyCounter > 2) {
               this.comboKeyCounter = 0
             }
-            console.log(' first key : ', this.firstInput, 'second key : ', this.secondInput, ' combo count : ', this.comboKeyCounter);
-
             this.currentinput = input
             if (input == this.typingContent[this.startIndex]?.khmer) {
               this.khmerTypingService.playTime(input, this.startIndex)
