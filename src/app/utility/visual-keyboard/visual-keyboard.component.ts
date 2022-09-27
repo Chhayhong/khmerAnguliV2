@@ -6,15 +6,12 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class VisualKeyboardComponent implements OnInit {
   @Input() currentKeys:any=[]
-Keyboard: any;
   constructor(
   ) { }
 
   ngOnInit() {
-    // document
-    // .getElementById("keyboard")
-    // .getElementById(key)
-    // .setAttributeNS(null, "fill", color);
+    const visualKey = document.getElementById(this.currentKeys) as HTMLFormElement;
+    visualKey.setAttributeNS(null, "fill", '#5bb1f7');
   }
 
 }

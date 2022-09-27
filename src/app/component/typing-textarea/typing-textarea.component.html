@@ -20,7 +20,7 @@
                 <!-- <progress style="width:100%" id="file" [value]="startIndex" [max]="typingContent.length"> </progress> -->
                 <div class="visual-key-group">
                     <app-left-hand class="left-hand"></app-left-hand>
-                    <app-visual-keyboard class="visual-key"></app-visual-keyboard>
+                    <app-visual-keyboard class="visual-key" *ngFor="let key of keyboard; first as isFirst" [currentKeys]="keyboard" ></app-visual-keyboard>
                     <app-right-hand class="right-hand"></app-right-hand>
                 </div>
                 <input style="font-family: Kantumruy" type="text" [formControl]="textAreaControl"
