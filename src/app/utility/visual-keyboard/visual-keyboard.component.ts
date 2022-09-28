@@ -10,8 +10,12 @@ export class VisualKeyboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const visualKey = document.getElementById(this.currentKeys) as HTMLFormElement;
-    visualKey.setAttributeNS(null, "fill", '#5bb1f7');
+    console.log(this.currentKeys, 'visual');
+    for(var i = 0; i < this.currentKeys.length; i++){
+      const visualKey = document.getElementById(this.currentKeys[i]) as HTMLFormElement;
+      visualKey.setAttributeNS(null, "fill", '#5bb1f7');
+    }
+
   }
 
 }

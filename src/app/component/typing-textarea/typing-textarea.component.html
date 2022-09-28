@@ -2,8 +2,9 @@
     <div class="play-screen">
         <div class="typing-content">
             <br>
-            <span *ngFor="let item of typingContent; let i = index"   >
-                <span [class]="'alphabet'+i" [style.color]="typingContent[i].current?'#596DD2':'black'">{{item.khmer}}</span>
+            <span *ngFor="let item of typingContent; let i = index">
+                <span [class]="'alphabet'+i"
+                    [style.color]="typingContent[i].current?'#596DD2':'black'">{{item.khmer}}</span>
             </span>
             <div style="margin-bottom: 300px;"></div>
         </div>
@@ -18,10 +19,11 @@
                             *ngIf="isFirst">{{keyboard.length>1?'+':''}}</span></span>
                 </span>
                 <!-- <progress style="width:100%" id="file" [value]="startIndex" [max]="typingContent.length"> </progress> -->
-                <div class="visual-key-group">
-                    <app-left-hand class="left-hand"></app-left-hand>
-                    <app-visual-keyboard class="visual-key" *ngFor="let key of keyboard; first as isFirst" [currentKeys]="keyboard" ></app-visual-keyboard>
-                    <app-right-hand class="right-hand"></app-right-hand>
+                <div class="visual-key-group" *ngFor="let key of keyboard; first as isFirst">
+                    <!-- <app-left-hand class="left-hand" [currentKeys]="keyboard" *ngIf="isFirst"></app-left-hand> -->
+                    <app-visual-keyboard class="visual-key" [currentKeys]="keyboard" *ngIf="isFirst">
+                    </app-visual-keyboard>
+                    <!-- <app-right-hand class="right-hand" [currentKeys]="keyboard" *ngIf="isFirst"></app-right-hand> -->
                 </div>
                 <input style="font-family: Kantumruy" type="text" [formControl]="textAreaControl"
                     placeholder="ចាប់ផ្ដើមត្រង់នេះ 🏁" [autofocus]="true">

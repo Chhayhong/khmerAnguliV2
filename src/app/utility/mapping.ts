@@ -113,6 +113,7 @@ const khmerMapping:any = {
     '។': ['POINT'],
     '៕': ['LEFT_SHIFT', 'POINT'],
     '៊': ['SLASH'],
+    'ុី': ['SLASH'],
     '?': ['LEFT_SHIFT', 'SLASH'],
     '\\': ['ALT_GR', 'BACKSLASH'],
     'ឩ': ['ALT_GR', 'LEFT_BRACKET'],
