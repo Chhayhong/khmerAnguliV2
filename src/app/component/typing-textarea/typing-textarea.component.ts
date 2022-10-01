@@ -6,6 +6,7 @@ import mapping from "../../utility/mapping";
 import localContent from 'src/app/utility/local-content';
 import combinableVowel from 'src/app/utility/combinable-vowel';
 import nextCombinableVowel from 'src/app/utility/next-combinable-vowel';
+import nextKeyHintCombinableVowel from 'src/app/utility/next-key-hint-combinablevowel';
 @Component({
   selector: 'app-typing-textarea',
   templateUrl: './typing-textarea.component.html',
@@ -13,7 +14,7 @@ import nextCombinableVowel from 'src/app/utility/next-combinable-vowel';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TypingTextareaComponent implements OnInit, OnDestroy {
-  @Input() typingTextAreaData = localContent['debug'];
+  @Input() typingTextAreaData = localContent['ប្រទេសកម្ពុជា'];
   destroy$: Subject<boolean> = new Subject<boolean>();
   // forceFocus: boolean = true;
   displayCurrentAlphabet: string = '';
@@ -46,13 +47,15 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe((input) => {
           if (input != null) {
-            this.keyboard = mapping[this.typingContent[this.startIndex]?.khmer]
             if (this.checkCombinableVowel()) {
               this.comboKeyCounter++
               if (this.comboKeyCounter === 1) {
                 this.firstInput = input
                 if (!combinableVowel[this.firstInput]) {
                   this.resetComboKeys()
+                  this.keyboard = mapping[this.typingContent[this.startIndex]?.khmer]
+                }else{
+                  this.keyboard = mapping[nextKeyHintCombinableVowel[this.firstInput]]
                 }
               }
               if (this.comboKeyCounter === 2) {
@@ -64,6 +67,7 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
                   input = combinableVowel[this.firstInput]
                   this.resetComboKeys()
                 }
+                
               }
             }
             if (this.comboKeyCounter > 2) {
@@ -74,9 +78,11 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
               this.khmerTypingService.playTime(input, this.startIndex)
               this.markIncorrectAlphabet(this.startIndex, '#ffff')
               this.startIndex = this.startIndex + 1
+              this.keyboard = mapping[this.typingContent[this.startIndex]?.khmer]
               this.displayCurrentAlphabet = this.khmerTypingService.specialAlphabetConverter(this.typingContent[this.startIndex]?.khmer)
               this.textAreaControl.reset()
             } else {
+        
               this.markIncorrectAlphabet(this.startIndex, 'red')
               this.khmerTypingService.playTime(input, this.startIndex)
               this.textAreaControl.reset()
