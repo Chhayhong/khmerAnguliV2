@@ -14,7 +14,7 @@ import nextKeyHintCombinableVowel from 'src/app/utility/next-key-hint-combinable
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TypingTextareaComponent implements OnInit, OnDestroy {
-  @Input() typingTextAreaData = localContent['ប្រទេសកម្ពុជា'];
+  @Input() typingTextAreaData = localContent['debug2'];
   destroy$: Subject<boolean> = new Subject<boolean>();
   // forceFocus: boolean = true;
   displayCurrentAlphabet: string = '';
