@@ -71,12 +71,14 @@ export class KhmerTypingService {
   scopeOutVowel(previousValue: string, currentValue: string) {
     if (previousValue === 'ុ' && currentValue === 'ី') {
       return `ុី`
+    } else if (previousValue === 'ុ' && currentValue === 'ំ') {
+      return `ុំ`
     } else {
       return combinableVowel[previousValue]
     }
   }
   checkCombinableVowel(previousValue: any, currentValue: string) {
-    if (previousValue === 'ុ' && currentValue === 'ី' || previousValue === 'េ' && currentValue === 'ះ' || previousValue === '៊' && currentValue === 'ី' || previousValue === 'ោ' && currentValue === 'ះ' || previousValue === 'ា' && currentValue === 'ំ' || previousValue === 'ុ' && currentValue === 'ះ') {
+    if (previousValue === 'ុ' && currentValue === 'ំ' || previousValue === 'ុ' && currentValue === 'ី' || previousValue === 'េ' && currentValue === 'ះ' || previousValue === '៊' && currentValue === 'ី' || previousValue === 'ោ' && currentValue === 'ះ' || previousValue === 'ា' && currentValue === 'ំ' || previousValue === 'ុ' && currentValue === 'ះ') {
       return true
     } else {
       return false;

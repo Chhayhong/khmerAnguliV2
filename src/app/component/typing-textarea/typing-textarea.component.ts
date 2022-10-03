@@ -14,7 +14,7 @@ import nextKeyHintCombinableVowel from 'src/app/utility/next-key-hint-combinable
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TypingTextareaComponent implements OnInit, OnDestroy {
-  @Input() typingTextAreaData = localContent['debug2'];
+  @Input() typingTextAreaData = localContent['debug'];
   destroy$: Subject<boolean> = new Subject<boolean>();
   // forceFocus: boolean = true;
   displayCurrentAlphabet: string = '';
@@ -98,7 +98,7 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
     });
   }
   checkBothVowel() {
-    if (this.firstInput === 'ុ' && this.secondInput === 'ី' || this.firstInput === 'េ' && this.secondInput === 'ះ' || this.firstInput === '៊' && this.secondInput === 'ី' || this.firstInput === 'ា' && this.secondInput === 'ំ' || this.firstInput === 'ោ' && this.secondInput === 'ះ' || this.firstInput === 'ុ' && this.secondInput === 'ះ') {
+    if (this.firstInput === 'ុ' && this.secondInput === 'ំ' || this.firstInput === 'ុ' && this.secondInput === 'ី' || this.firstInput === 'េ' && this.secondInput === 'ះ' || this.firstInput === '៊' && this.secondInput === 'ី' || this.firstInput === 'ា' && this.secondInput === 'ំ' || this.firstInput === 'ោ' && this.secondInput === 'ះ' || this.firstInput === 'ុ' && this.secondInput === 'ះ') {
       return true;
     } else {
       return false;
