@@ -39,7 +39,7 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initPlayScreen()
   }
-
+  //TODO: fix the typing ុំ does not accept.
   initPlayScreen() {
     const inputValue = of(this.textAreaControl)
     inputValue.subscribe((value) => {
@@ -64,7 +64,10 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
                   this.resetComboKeys()
                 }
                 if (this.checkBothVowel()) {
-                  input = combinableVowel[this.firstInput]
+                  // input = combinableVowel[this.firstInput]
+                  input =this.scopeOutVowel(this.firstInput,this.secondInput)
+                  console.log(input);
+                  
                   this.resetComboKeys()
                 }
                 
@@ -125,6 +128,18 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
     const alphabet = this.el.nativeElement.querySelector('.alphabet' + alphabetIndex);
     this.renderer.setStyle(alphabet, 'text-decoration', 'underline', RendererStyleFlags2.Important + RendererStyleFlags2.DashCase);
     this.renderer.setStyle(alphabet, 'text-decoration-color', color, RendererStyleFlags2.Important + RendererStyleFlags2.DashCase);
+  }
+  scopeOutVowel(firstInput: string, secondInput: string) {
+    if (firstInput === '៊' && secondInput === 'ី') {
+      return `ុី`
+    }
+    if (firstInput === 'ុ' && secondInput === 'ី') {
+      return `ុី`
+    } else if (firstInput === 'ុ' && secondInput === 'ំ') {
+      return `ុំ`
+    } else {
+      return nextKeyHintCombinableVowel[firstInput]
+    }
   }
   restartTyping() {
     try {
