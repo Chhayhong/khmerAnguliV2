@@ -1,11 +1,10 @@
-const combinableVowel:any = {
+const nextKeyHintCombinableVowel:any = {
     'ោ':'ោះ',
     'ា':'ាំ',
     'ុ':'ុះ',
-    '៊':'ុី',
+    '៊':'ី',
     'េ':'េះ',
     // 'ុ':'ុី' //since we cannot have duplicate key we will scope out.
-    // 'ុ':'ំ' //since we cannot have duplicate key we will scope out.
 }
 
-export default combinableVowel;
+export default nextKeyHintCombinableVowel;

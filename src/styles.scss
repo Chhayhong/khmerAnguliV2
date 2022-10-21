@@ -14,7 +14,7 @@ body{
     flex-direction: row;
     justify-content: center;
     .typing-content{
-        width: 100%;
+        width: 60%;
         justify-content: center;
     }
     .typing-text-area{
@@ -31,3 +31,8 @@ input{
 input.placeholder {
     font-family: Kantumruy; 
 }
+// svg {
+//     height: 50%;
+//     width: 50%;
+//     background-color: aliceblue !important;
+//   }
