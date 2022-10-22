@@ -54,7 +54,7 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
                 if (!combinableVowel[this.firstInput]) {
                   this.resetComboKeys()
                   this.keyboard = mapping[this.typingContent[this.startIndex]?.khmer]
-                }else{
+                } else {
                   this.keyboard = mapping[nextKeyHintCombinableVowel[this.firstInput]]
                 }
               }
@@ -65,12 +65,10 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
                 }
                 if (this.checkBothVowel()) {
                   // input = combinableVowel[this.firstInput]
-                  input =this.scopeOutVowel(this.firstInput,this.secondInput)
-                  console.log(input);
-                  
+                  input = this.scopeOutVowel(this.firstInput, this.secondInput)
                   this.resetComboKeys()
                 }
-                
+
               }
             }
             if (this.comboKeyCounter > 2) {
@@ -85,7 +83,7 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
               this.displayCurrentAlphabet = this.khmerTypingService.specialAlphabetConverter(this.typingContent[this.startIndex]?.khmer)
               this.textAreaControl.reset()
             } else {
-        
+
               this.markIncorrectAlphabet(this.startIndex, 'red')
               this.khmerTypingService.playTime(input, this.startIndex)
               this.textAreaControl.reset()
