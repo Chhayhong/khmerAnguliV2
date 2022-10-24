@@ -17,7 +17,7 @@ import { VisualKeyboardComponent } from './utility/visual-keyboard/visual-keyboa
     AutofocusDirective,
     VisualKeyboardComponent,
     RightHandComponent,
-    LeftHandComponent
+    LeftHandComponent,
   ],
   imports: [
     BrowserModule,

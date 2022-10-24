@@ -7,6 +7,7 @@ import localContent from 'src/app/utility/local-content';
 import combinableVowel from 'src/app/utility/combinable-vowel';
 import nextCombinableVowel from 'src/app/utility/next-combinable-vowel';
 import nextKeyHintCombinableVowel from 'src/app/utility/next-key-hint-combinablevowel';
+import KEYBOARD_TYPE from 'src/app/utility/language-classify';
 @Component({
   selector: 'app-typing-textarea',
   templateUrl: './typing-textarea.component.html',
@@ -16,6 +17,7 @@ import nextKeyHintCombinableVowel from 'src/app/utility/next-key-hint-combinable
 export class TypingTextareaComponent implements OnInit, OnDestroy {
   @Input() typingTextAreaData = localContent['debug'];
   destroy$: Subject<boolean> = new Subject<boolean>();
+  KeyboardType=KEYBOARD_TYPE
   // forceFocus: boolean = true;
   displayCurrentAlphabet: string = '';
   textAreaControl = new FormControl('');
@@ -27,6 +29,7 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
   comboKeyCounter = 0;
   firstInput = ''
   secondInput = ''
+  displayVisualKeyboard:boolean=true;
   constructor(
     private khmerTypingService: KhmerTypingService,
     private renderer: Renderer2,
@@ -97,6 +100,9 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
           }
         })
     });
+  }
+  switchDisplayVisualKey(){
+    this.displayVisualKeyboard=!this.displayVisualKeyboard;
   }
   checkBothVowel() {
     if (this.firstInput === 'ុ' && this.secondInput === 'ំ' || this.firstInput === 'ុ' && this.secondInput === 'ី' || this.firstInput === 'េ' && this.secondInput === 'ះ' || this.firstInput === '៊' && this.secondInput === 'ី' || this.firstInput === 'ា' && this.secondInput === 'ំ' || this.firstInput === 'ោ' && this.secondInput === 'ះ' || this.firstInput === 'ុ' && this.secondInput === 'ះ') {
