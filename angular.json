@@ -100,6 +100,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "KhmerAnguluV2:build:production",
+            "firebaseProject": "khmeranguliv2",
+            "firebaseHostingSite": "khmeranguliv2"
+          }
         }
       }
     }

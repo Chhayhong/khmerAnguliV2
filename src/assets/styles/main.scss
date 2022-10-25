@@ -1,0 +1,10 @@
+@import url('./home.scss');
+
+.fix-footer{
+    height: auto;
+    position: fixed;
+    width: 100%;
+    bottom: -20px;
+    right: 0;
+    left: 0;
+}
