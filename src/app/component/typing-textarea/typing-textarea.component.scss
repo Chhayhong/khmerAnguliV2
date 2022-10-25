@@ -29,6 +29,7 @@ input:focus {
     color: #333;
     background-color: #ffff;
     text-align: center;
+    user-select: none;
 }
 .announce-result{
     text-align: center;
