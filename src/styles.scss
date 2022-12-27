@@ -1,25 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Kantumruy:wght@300&display=swap');
+@import url('./assets/styles/main.scss');
 body{
     justify-content: center;
     display: flex;
-    font-size: 30px;
+    font-size: 22px;
     font-family: Kantumruy;
 }
-.container{
-    width: 90vw;
-    padding: 10px;
-}
 .play-screen{
+    z-index: 1;
     display: flex;
     flex-direction: row;
     justify-content: center;
     .typing-content{
-        width: 60%;
+        width: 100%;
+        padding:  1% 5%;
         justify-content: center;
     }
     .typing-text-area{
         width: 90vw;
-        margin-bottom: 10px;
         bottom: 0;
         position: fixed;
     }

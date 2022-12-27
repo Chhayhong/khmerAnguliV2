@@ -1,0 +1,20 @@
+.homepage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.greeting-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 99vw;
+    overflow: hidden;
+    margin: 0; 
+    padding: 0;
+}
+.greeting-container img{
+    min-height: 100px;
+    max-height: 700px;
+    margin: 0px -70px;
+}

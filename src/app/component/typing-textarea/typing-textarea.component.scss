@@ -10,12 +10,12 @@ button{
     text-align: center;
 }
 input{
-    width: 58%;
-    height: 55px;
+    width: 60%;
+    height: 50px;
     font-size: medium;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 12px;
+    border-radius: 10px;
     border: none;
 }
 input:focus {
@@ -27,12 +27,13 @@ input:focus {
 }
 .input-container{
     color: #333;
-    background-color: #ffff;
     text-align: center;
+    user-select: none;
 }
 .announce-result{
     text-align: center;
 }
+
 .visual-key-group{
     display: flex;
     flex-direction: row;
@@ -43,14 +44,14 @@ input:focus {
     align-items: center;
     display: flex;
     }
-    .right-hand{
-        width: 20%;
-        display: flex;
-        align-items: center;
-    }
-    .left-hand{
-        width: 20%;
-        display: flex;
-        align-items: center;
-    }
+    // .right-hand{
+    //     width: 20%;
+    //     display: flex;
+    //     align-items: center;
+    // }
+    // .left-hand{
+    //     width: 20%;
+    //     display: flex;
+    //     align-items: center;
+    // }
 }

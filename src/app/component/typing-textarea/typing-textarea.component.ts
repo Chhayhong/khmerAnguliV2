@@ -7,6 +7,7 @@ import localContent from 'src/app/utility/local-content';
 import combinableVowel from 'src/app/utility/combinable-vowel';
 import nextCombinableVowel from 'src/app/utility/next-combinable-vowel';
 import nextKeyHintCombinableVowel from 'src/app/utility/next-key-hint-combinablevowel';
+import KEYBOARD_TYPE from 'src/app/utility/language-classify';
 @Component({
   selector: 'app-typing-textarea',
   templateUrl: './typing-textarea.component.html',
@@ -16,21 +17,21 @@ import nextKeyHintCombinableVowel from 'src/app/utility/next-key-hint-combinable
 export class TypingTextareaComponent implements OnInit, OnDestroy {
   @Input() typingTextAreaData = localContent['debug'];
   destroy$: Subject<boolean> = new Subject<boolean>();
-  // forceFocus: boolean = true;
+  KeyboardType=KEYBOARD_TYPE
   displayCurrentAlphabet: string = '';
   textAreaControl = new FormControl('');
   startIndex = 0;
-  // keepChecking = interval(0);
   currentinput: any = ''
   announceResult: string = '';
   keyboard: any = ''
   comboKeyCounter = 0;
   firstInput = ''
   secondInput = ''
+  displayVisualKeyboard:boolean=true;
   constructor(
     private khmerTypingService: KhmerTypingService,
     private renderer: Renderer2,
-    private el: ElementRef
+    private el: ElementRef,
   ) {
     this.displayCurrentAlphabet = this.typingTextAreaData[0]
     this.keyboard = mapping[this.typingTextAreaData[0]]
@@ -64,7 +65,6 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
                   this.resetComboKeys()
                 }
                 if (this.checkBothVowel()) {
-                  // input = combinableVowel[this.firstInput]
                   input = this.scopeOutVowel(this.firstInput, this.secondInput)
                   this.resetComboKeys()
                 }
@@ -97,6 +97,9 @@ export class TypingTextareaComponent implements OnInit, OnDestroy {
           }
         })
     });
+  }
+  switchDisplayVisualKey(){
+    this.displayVisualKeyboard=!this.displayVisualKeyboard;
   }
   checkBothVowel() {
     if (this.firstInput === 'ុ' && this.secondInput === 'ំ' || this.firstInput === 'ុ' && this.secondInput === 'ី' || this.firstInput === 'េ' && this.secondInput === 'ះ' || this.firstInput === '៊' && this.secondInput === 'ី' || this.firstInput === 'ា' && this.secondInput === 'ំ' || this.firstInput === 'ោ' && this.secondInput === 'ះ' || this.firstInput === 'ុ' && this.secondInput === 'ះ') {

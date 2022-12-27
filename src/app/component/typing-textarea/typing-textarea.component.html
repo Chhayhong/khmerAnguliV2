@@ -1,31 +1,29 @@
-<div class="container">
+<div class="homepage">
     <div class="play-screen">
         <div class="typing-content">
-            <br>
             <span *ngFor="let item of typingContent; let i = index">
                 <span [class]="'alphabet'+i"
                     [style.color]="typingContent[i].current?'#596DD2':'black'">{{item.khmer}}</span>
             </span>
-            <div style="margin-bottom: 300px;"></div>
+            <div style="margin-top: 500px;"></div>
         </div>
         <!-- [style.marginTop.px]="startIndex*90" -->
         <div class="typing-text-area">
-            <br>
-            <div class="input-container" *ngIf="announceResult===''">
-                <span>វាយអក្សរ : {{this.displayCurrentAlphabet}} | បានបញ្ចូល: {{ this.currentinput}} | ខុស : {{
-                    this.typingContent[startIndex]?.inCorrectCount}}</span>
-
-                <!-- <progress style="width:100%" id="file" [value]="startIndex" [max]="typingContent.length"> </progress> -->
-                <div class="visual-key-group" *ngFor="let key of keyboard; first as isFirst">
+            <div style="text-align:center">
+                <div class="input-container" *ngIf="announceResult===''"  [style.color]="displayVisualKeyboard?'#333':'#ffffff'">
+                    <span> <span>ជាក្ដារចុច <span [style.color]="'red'">{{KeyboardType[this.typingContent[startIndex].khmer]}}</span></span>  | វាយអក្សរ : {{this.displayCurrentAlphabet}} | បានបញ្ចូល: {{ this.currentinput}} | ខុស : {{
+                        this.typingContent[startIndex]?.inCorrectCount}}</span>  <span  [style.color]="'#02154a'" (click)="this.switchDisplayVisualKey()" style="cursor:pointer;"> | {{displayVisualKeyboard?" បិទ":" បើក"}}ក្ដារចុច</span></div>
+                <div class="visual-key-group input-container" *ngFor="let key of keyboard; first as isFirst" >
                     <!-- <app-left-hand class="left-hand" [currentKeys]="keyboard" *ngIf="isFirst"></app-left-hand> -->
-                    <app-visual-keyboard class="visual-key" [currentKeys]="keyboard" *ngIf="keyboard.length===1">
+                    <app-visual-keyboard class="visual-key" [currentKeys]="keyboard" *ngIf="keyboard.length===1 && displayVisualKeyboard" >
                     </app-visual-keyboard>
-                    <app-visual-keyboard class="visual-key" [currentKeys]="keyboard" *ngIf="!isFirst">
+                    <app-visual-keyboard class="visual-key" [currentKeys]="keyboard" *ngIf="!isFirst && displayVisualKeyboard">
                     </app-visual-keyboard>
                     <!-- <app-right-hand class="right-hand" [currentKeys]="keyboard" *ngIf="isFirst"></app-right-hand> -->
                 </div>
+               <hr>
                 <input style="font-family: Kantumruy" type="text" [formControl]="textAreaControl"
-                    placeholder="ចាប់ផ្ដើមត្រង់នេះ 🏁" [autofocus]="true">
+                    placeholder="ចាប់ផ្ដើមត្រង់នេះ 🏁">
             </div>
             <div class="announce-result">
                 <h4>{{announceResult}}</h4>
