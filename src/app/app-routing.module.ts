@@ -4,7 +4,7 @@ import { HomeComponent } from './component/home/home.component';
 import { TypingTextareaComponent } from './component/typing-textarea/typing-textarea.component';
 
 const routes: Routes = [
-  { path:  '', redirectTo: 'home', pathMatch: 'full'},
+  { path:  '', redirectTo: 'play', pathMatch: 'full'},
   { path:  'home', component:  HomeComponent},
   { path:  'play', component:  TypingTextareaComponent}
 
